@@ -1,0 +1,37 @@
+{
+  "publish": {
+    "Enabled": false,
+    "ProjectConfig": {
+      "Title": "City Lights",
+      "Type": "map",
+      "Org": "local",
+      "Ident": "citylights",
+      "Schema": 0,
+      "IncludeSourceFiles": false,
+      "Resources": null,
+      "PackageReferences": [],
+      "EditorReferences": [
+        "facepunch.ceiling_halogen#29025",
+        "facepunch.floorresina#100692",
+        "facepunch.glass_a#111263",
+        "facepunch.granite_simple#85416",
+        "facepunch.wall_brick_new#115471",
+        "facepunch.wall_brick_paint#111308",
+        "facepunch.wall_concrete_painted_a#85470",
+        "facepunch.woodenflooringa#111159",
+        "gkaf.outlet_switch#53535",
+        "gkaf.wood_floor#32170",
+        "mdlresrc.plaster_white001#23421",
+        "rustextended.brick_wall_c_damage_blend#43212",
+        "titanovsky.walllpaper14_2k#54255",
+        "zhaohua.woodfloor#24682"
+      ],
+      "Mounts": null,
+      "IsStandaloneOnly": false,
+      "Metadata": {
+        "SingleAssetSource": "maps/city_lights.vmap",
+        "ParentPackage": "publicsquare.city_lights"
+      }
+    }
+  }
+}

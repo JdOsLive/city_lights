@@ -1,0 +1,22 @@
+{
+  "publish": {
+    "Enabled": false,
+    "ProjectConfig": {
+      "Title": "The Playground",
+      "Type": "map",
+      "Org": "local",
+      "Ident": "theplayground",
+      "Schema": 0,
+      "IncludeSourceFiles": false,
+      "Resources": null,
+      "PackageReferences": [],
+      "EditorReferences": null,
+      "Mounts": null,
+      "IsStandaloneOnly": false,
+      "Metadata": {
+        "SingleAssetSource": "scenes/the playground.scene",
+        "ParentPackage": "publicsquare.city_lights"
+      }
+    }
+  }
+}

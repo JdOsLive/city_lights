@@ -1,0 +1,136 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits PanelComponent
+@namespace Sandbox
+
+<!-- 
+    PLAYER NAME TAG WITH AVATAR
+    Style: Navy Blue & Gold (Premium)
+-->
+
+<style>
+	.nametag-panel {
+		/* Flex row to put image next to text */
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		
+		/* Fade out logic */
+		opacity: 1;
+		transition: opacity 0.2s;
+		
+		/* Navy Blue Theme */
+		background-color: rgba(10, 25, 50, 0.9); /* Deep Navy */
+		padding: 8px 16px;
+		border-radius: 50px;
+		backdrop-filter: blur(6px);
+		
+		/* Subtle Gold Border */
+		border: 1px solid rgba(255, 215, 0, 0.3); 
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+	}
+
+	.avatar {
+		width: 64px;
+		height: 64px;
+		border-radius: 50%;
+		margin-right: 12px;
+		background-color: #0a1932;
+		
+		/* Default Border (Silver/White for others) */
+		border: 2px solid rgba(255, 255, 255, 0.8);
+	}
+
+	.name-text {
+		font-family: "Poppins", sans-serif;
+		font-weight: 700;
+		font-size: 32px;
+		color: white;
+		text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+		line-height: 32px;
+	}
+	
+	/* --- SELF HIGHLIGHT (GOLD) --- */
+	.self .name-text {
+		color: #FFD700; /* Gold */
+		text-shadow: 0 0 10px rgba(255, 215, 0, 0.4); /* Gold Glow */
+	}
+	
+	.self .avatar {
+		border-color: #FFD700;
+		box-shadow: 0 0 10px rgba(255, 215, 0, 0.4); /* Avatar Glow */
+	}
+	
+	.self.nametag-panel {
+		border-color: rgba(255, 215, 0, 0.6);
+	}
+</style>
+
+<root>
+	<!-- FIX: Only render if NOT local (or if we really want to debug self tags) -->
+	@if ( !IsLocal )
+	{
+		<div class="nametag-panel" style="opacity: @Opacity">
+			<!-- Avatar Image using URL scheme -->
+			<img class="avatar" src=@AvatarUrl />
+			
+			<!-- Name Text -->
+			<div class="name-text">@Name</div>
+		</div>
+	}
+</root>
+
+@code {
+	public string Name { get; set; } = "";
+	public bool IsLocal { get; set; } = false;
+	public float Opacity { get; set; } = 1.0f;
+	public string AvatarUrl { get; set; } = "";
+
+	private ulong _currentSteamId = 0;
+
+	protected override void OnUpdate()
+	{
+		var net = GameObject.Network;
+		
+		if ( net != null && net.Active )
+		{
+			var owner = net.Owner;
+			
+			if ( owner != null )
+			{
+				Name = owner.DisplayName;
+				IsLocal = (owner == Connection.Local);
+
+				// Update Avatar URL if the user changed
+				if ( _currentSteamId != owner.SteamId )
+				{
+					_currentSteamId = owner.SteamId;
+					// Use the UI URL scheme for avatars
+					AvatarUrl = $"avatar:{owner.SteamId}";
+				}
+			}
+			else
+			{
+				Name = "Player";
+				_currentSteamId = 0;
+				AvatarUrl = "";
+			}
+		}
+		else
+		{
+			Name = "";
+		}
+
+		if ( Scene.Camera != null )
+		{
+			var dist = WorldPosition.Distance( Scene.Camera.WorldPosition );
+			
+			if ( dist > 500 ) Opacity = 0;
+			else if ( dist > 300 ) Opacity = 1.0f - ((dist - 300) / 200);
+			else Opacity = 1.0f;
+		}
+	}
+
+	protected override int BuildHash() => System.HashCode.Combine( Name, Opacity, _currentSteamId, IsLocal );
+}
