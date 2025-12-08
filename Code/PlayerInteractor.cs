@@ -37,11 +37,6 @@ public sealed class PlayerInteractor : Component
             .IgnoreGameObjectHierarchy( GameObject ) // Don't hit yourself
             .Run();
 
-        // --- FIX: Set Color, THEN Draw Line ---
-        Gizmo.Draw.Color = tr.Hit ? Color.Red : Color.Green;
-        Gizmo.Draw.Line( tr.StartPosition, tr.EndPosition );
-        // --------------------------------------
-
         if ( tr.Hit )
         {
             CurrentInteractable = tr.GameObject.Components.Get<IInteractable>();
@@ -54,7 +49,7 @@ public sealed class PlayerInteractor : Component
 
     // FIX 2: Replaced [Rpc.Cmd] with [Broadcast]
     // This sends the function call to everyone (including the Server)
-    [Broadcast] 
+    [Rpc.Broadcast] 
     private void CmdTryInteract( Guid targetId )
     {
         // FIX 3: Server Check

@@ -1,12 +1,10 @@
 using Sandbox;
-using System;
 
 public sealed class ColorChanger : Component, IInteractable
 {
-    // The UI will show "[E] Change Color"
     public string ActionName => "Change Color";
 
-    [Rpc.Broadcast] // Broadcast ensures everyone sees the color change
+    [Rpc.Broadcast] // <--- This MUST be Rpc.Broadcast, not just Broadcast
     public void OnInteract( GameObject player )
     {
         var renderer = Components.Get<ModelRenderer>();
@@ -14,8 +12,6 @@ public sealed class ColorChanger : Component, IInteractable
         {
             renderer.Tint = Color.Random;
         }
-        
-        // Optional: Play a sound
         Sound.Play( "ui.button.press", WorldPosition );
     }
 }

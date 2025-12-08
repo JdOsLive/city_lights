@@ -248,59 +248,6 @@
           }
         ],
         "Children": []
-      },
-      {
-        "__guid": "1619b60a-42b6-4bc5-8031-6e0e26e2d10c",
-        "__version": 1,
-        "Flags": 0,
-        "Name": "HUD",
-        "Position": "0,38.13214,32",
-        "Rotation": "0,0,0,1",
-        "Scale": "1,1,1",
-        "Tags": "",
-        "Enabled": true,
-        "NetworkMode": 2,
-        "NetworkInterpolation": true,
-        "NetworkOrphaned": 0,
-        "NetworkTransmit": true,
-        "OwnerTransfer": 1,
-        "Components": [
-          {
-            "__type": "Sandbox.ScreenPanel",
-            "__guid": "a7a5d230-3a53-4e71-9462-020872808819",
-            "__enabled": true,
-            "AutoScreenScale": true,
-            "OnComponentDestroy": null,
-            "OnComponentDisabled": null,
-            "OnComponentEnabled": null,
-            "OnComponentFixedUpdate": null,
-            "OnComponentStart": null,
-            "OnComponentUpdate": null,
-            "Opacity": 1,
-            "Scale": 1,
-            "ScaleStrategy": "ConsistentHeight",
-            "TargetCamera": null,
-            "ZIndex": 100
-          },
-          {
-            "__type": "Sandbox.InteractionHint",
-            "__guid": "8a9cea7e-9d9e-4616-b6af-13b8a02061ce",
-            "__enabled": true,
-            "MyInteractor": {
-              "_type": "component",
-              "component_id": "5acfe395-4969-44ee-884e-e954acde326c",
-              "go": "0fa39ff8-7879-463d-b182-627d38612a0b",
-              "component_type": "PlayerInteractor"
-            },
-            "OnComponentDestroy": null,
-            "OnComponentDisabled": null,
-            "OnComponentEnabled": null,
-            "OnComponentFixedUpdate": null,
-            "OnComponentStart": null,
-            "OnComponentUpdate": null
-          }
-        ],
-        "Children": []
       }
     ],
     "__properties": {

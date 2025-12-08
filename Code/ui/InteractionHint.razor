@@ -1,0 +1,32 @@
+@using Sandbox;
+@inherits PanelComponent
+
+<root class="interaction-container">
+    @if ( MyInteractor?.CurrentInteractable != null )
+    {
+        <div class="hint-box">
+            <div class="key">E</div>
+            <div class="label">@MyInteractor.CurrentInteractable.ActionName</div>
+        </div>
+    }
+</root>
+
+@code {
+    [Property] public PlayerInteractor MyInteractor { get; set; }
+
+    protected override void OnUpdate()
+    {
+        // Auto-find the player if the slot is empty
+        if ( MyInteractor == null )
+        {
+            MyInteractor = Components.GetInAncestors<PlayerInteractor>();
+        }
+    }
+
+    // Only redraw when the object we are looking at changes
+    protected override int BuildHash()
+    {
+        var actionName = MyInteractor?.CurrentInteractable?.ActionName ?? string.Empty;
+        return actionName.GetHashCode();
+    }
+}
