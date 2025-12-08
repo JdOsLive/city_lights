@@ -1,8 +1,5 @@
 using Sandbox;
 using System.Linq;
-
-namespace Sandbox;   // ← REQUIRED FIX
-
 public sealed class ThirdPersonCamera : Component
 {
 	[Property, Title("Target Player")] 

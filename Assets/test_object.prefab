@@ -36,7 +36,7 @@
       },
       {
         "__type": "SimplePlayerController",
-        "__guid": "56d4e31f-b836-46e1-affe-2c5c8e4017e2",
+        "__guid": "a27d1aa0-efa2-4cad-9fbf-1394e5b6a7a2",
         "__enabled": true,
         "Acceleration": 10,
         "CrouchSpeed": 80,
@@ -181,18 +181,6 @@
         "OnComponentUpdate": null,
         "Source": "OwnerConnection",
         "WorkshopItems": []
-      },
-      {
-        "__type": "PlayerInteractor",
-        "__guid": "5acfe395-4969-44ee-884e-e954acde326c",
-        "__enabled": true,
-        "InteractDistance": 80,
-        "OnComponentDestroy": null,
-        "OnComponentDisabled": null,
-        "OnComponentEnabled": null,
-        "OnComponentFixedUpdate": null,
-        "OnComponentStart": null,
-        "OnComponentUpdate": null
       }
     ],
     "Children": [

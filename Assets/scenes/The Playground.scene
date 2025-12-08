@@ -186,8 +186,8 @@
           "ZNear": 10
         },
         {
-          "__type": "Sandbox.ThirdPersonCamera",
-          "__guid": "a7ac5d9c-1c63-4d4a-95b4-a1f2a7d2bf6a",
+          "__type": "ThirdPersonCamera",
+          "__guid": "66d20ae1-dd77-4adf-9558-87950aa66c18",
           "__enabled": true,
           "CrouchOffset": "0,0,32",
           "EyeOffset": "0,0,64",
@@ -198,7 +198,10 @@
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "Player": null
+          "Player": {
+            "_type": "gameobject",
+            "prefab": "test_object.prefab"
+          }
         }
       ],
       "Children": []
@@ -528,6 +531,114 @@
         {
           "__type": "Sandbox.PointLight",
           "__guid": "26f0aaf5-c2f7-4087-aa16-87b1ef8f66c8",
+          "__enabled": true,
+          "Attenuation": 1.255814,
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "1,0.83922,0.66667,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Radius": 499.99014,
+          "Shadows": true
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "4df39744-50f8-4cf4-91ef-22748a7808d0",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "Point Light (26)",
+      "Position": "-110.2411,132.1952,128",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "light_point,light",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.PointLight",
+          "__guid": "c6b02708-7aa3-4a96-b4db-d0e37ffc4c64",
+          "__enabled": true,
+          "Attenuation": 1.255814,
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "1,0.83922,0.66667,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Radius": 499.99014,
+          "Shadows": true
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "f76da21c-aa1e-4024-905a-493553a59818",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "Point Light (27)",
+      "Position": "-544,132.1952,128",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "light_point,light",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.PointLight",
+          "__guid": "a128636b-2837-4db0-9091-4549b24232a2",
+          "__enabled": true,
+          "Attenuation": 1.255814,
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "1,0.83922,0.66667,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Radius": 499.99014,
+          "Shadows": true
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "b71b4a8d-d494-4deb-b0f6-1983f362dc4f",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "Point Light (28)",
+      "Position": "-544,288,128",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "light_point,light",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.PointLight",
+          "__guid": "57e98f45-d5b5-4c93-a258-8905c793fe8c",
           "__enabled": true,
           "Attenuation": 1.255814,
           "FogMode": "Enabled",
@@ -1040,11 +1151,11 @@
       "Children": []
     },
     {
-      "__guid": "74c4de21-99e7-46db-8135-150f36f42f1c",
+      "__guid": "0158e091-6e91-4623-901e-5dffc9ad2897",
       "__version": 1,
       "Flags": 0,
-      "Name": "Cube",
-      "Position": "-192,-813.8052,78.98441",
+      "Name": "Music",
+      "Position": "415.9999,-799.9999,32",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "",
@@ -1056,114 +1167,53 @@
       "OwnerTransfer": 1,
       "Components": [
         {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "65199d8a-052c-496b-9600-a31de80d27cc",
+          "__type": "Sandbox.SoundPointComponent",
+          "__guid": "cc8a9b7b-cfe3-41b0-ac67-107d370aa90b",
           "__enabled": true,
-          "BodyGroups": 18446744073709551615,
-          "CreateAttachments": false,
-          "LodOverride": null,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
-          "Materials": null,
-          "Model": "models/dev/box.vmdl",
+          "Distance": 41500,
+          "DistanceAttenuation": false,
+          "DistanceAttenuationOverride": true,
+          "Falloff": [
+            {
+              "x": 0,
+              "y": 1,
+              "in": 3.1415927,
+              "out": -3.1415927,
+              "mode": "Mirrored"
+            },
+            {
+              "x": 1,
+              "y": 0,
+              "in": 0,
+              "out": 0,
+              "mode": "Mirrored"
+            }
+          ],
+          "Force2d": false,
+          "MaxRepeatTime": 1,
+          "MinRepeatTime": 1,
+          "Occlusion": false,
+          "OcclusionOverride": false,
+          "OcclusionRadius": 32,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "RenderOptions": {
-            "GameLayer": true,
-            "OverlayLayer": false,
-            "BloomLayer": false,
-            "AfterUILayer": false
+          "Pitch": 1,
+          "PlayOnStart": true,
+          "ReflectionOverride": false,
+          "Reflections": false,
+          "Repeat": true,
+          "SoundEvent": "sounds/got that feeling.sound",
+          "SoundOverride": false,
+          "StopOnNew": false,
+          "TargetMixer": {
+            "Name": "music",
+            "Id": "e8ee7c47-bca0-4b34-8a2d-8873ac50221b"
           },
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "ColorChanger",
-          "__guid": "d9849a47-5bde-4cf7-ad6f-63a2cdd47f14",
-          "__enabled": true,
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null
-        },
-        {
-          "__type": "Sandbox.BoxCollider",
-          "__guid": "fe147866-8500-45a0-8a53-6f7acd083e35",
-          "__enabled": true,
-          "Center": "0,0,0",
-          "ColliderFlags": 0,
-          "Elasticity": null,
-          "Friction": null,
-          "IsTrigger": false,
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "OnObjectTriggerEnter": null,
-          "OnObjectTriggerExit": null,
-          "OnTriggerEnter": null,
-          "OnTriggerExit": null,
-          "RollingResistance": null,
-          "Scale": "50,50,50",
-          "Static": false,
-          "Surface": null,
-          "SurfaceVelocity": "0,0,0"
-        },
-        {
-          "__type": "CityLights.TestInteractable",
-          "__guid": "b9fdd2c7-37ed-4504-a8d6-522e6ab49dbd",
-          "__enabled": true,
-          "ActionName": "Inspect",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null
-        }
-      ],
-      "Children": []
-    },
-    {
-      "__guid": "f802311c-524a-423d-be7b-e8da7c6eb478",
-      "__version": 1,
-      "Flags": 0,
-      "Name": "HUD",
-      "Position": "0,38.13214,32",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "NetworkTransmit": true,
-      "OwnerTransfer": 1,
-      "Components": [
-        {
-          "__type": "Sandbox.ScreenPanel",
-          "__guid": "69092660-afdc-422b-9ad4-353d380d3674",
-          "__enabled": true,
-          "AutoScreenScale": true,
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "Opacity": 1,
-          "Scale": 1,
-          "ScaleStrategy": "ConsistentHeight",
-          "TargetCamera": null,
-          "ZIndex": 100
+          "Volume": 1
         }
       ],
       "Children": []
