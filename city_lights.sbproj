@@ -24,6 +24,11 @@
     "LeaderboardType": "None",
     "CsProjName": "",
     "StartupScene": "scenes/the playground.scene",
-    "LaunchMode": "Normal"
+    "LaunchMode": "Normal",
+    "ControlModes": {
+      "Keyboard": false,
+      "VR": false,
+      "Gamepad": false
+    }
   }
 }

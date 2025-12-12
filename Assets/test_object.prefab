@@ -236,6 +236,58 @@
           }
         ],
         "Children": []
+      },
+      {
+        "__guid": "0bd62683-741b-4586-988d-7bee41fccfbd",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "HUD",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.ScreenPanel",
+            "__guid": "30df7528-9e3b-4cbb-b170-9fe41c0c3e50",
+            "__enabled": true,
+            "AutoScreenScale": true,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "Opacity": 1,
+            "Scale": 1,
+            "ScaleStrategy": "ConsistentHeight",
+            "TargetCamera": null,
+            "ZIndex": 100
+          },
+          {
+            "__type": "Sandbox.ui.ChatPanel",
+            "__guid": "9e331e40-1ff0-4c58-9024-243eee9f45b5",
+            "__enabled": true,
+            "CancelAction": "menu",
+            "ChatAction": "chat",
+            "FreshSeconds": 10,
+            "MaxMessages": 50,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "Open": false
+          }
+        ],
+        "Children": []
       }
     ],
     "__properties": {
