@@ -1,0 +1,261 @@
+@using Sandbox
+@using Sandbox.UI
+@inherits PanelComponent
+
+<root class="SimpleChat @(Open ? "open" : string.Empty)">
+    <div class="chat-output">
+        @foreach ( var entry in Entries )
+        {
+            <div class="chat-entry @(entry.IsFresh(FreshSeconds) ? "fresh" : string.Empty)">
+                <div class="avatar" style="background-image: url( avatar:@entry.SteamId )"></div>
+                <div class="name">@entry.Name</div>
+                <div class="message">@entry.Message</div>
+            </div>
+        }
+    </div>
+
+    <div class="chat-input">
+        <textentry @ref="InputBox"
+                   onsubmit="@SubmitMessage"
+                   placeholder="Say something..." />
+    </div>
+</root>
+
+@code {
+    [Property] public bool Open { get; set; }
+    [Property] public int MaxMessages { get; set; } = 50;
+    [Property] public string ChatAction { get; set; } = "chat";
+    [Property] public string CancelAction { get; set; } = "menu";
+    [Property] public float FreshSeconds { get; set; } = 10.0f;
+
+    public struct ChatEntry
+    {
+        public long SteamId { get; set; }
+        public string Name { get; set; }
+        public string Message { get; set; }
+        public RealTimeSince Since;
+        public bool IsFresh( float freshSeconds ) => Since < freshSeconds;
+    }
+
+    private readonly List<ChatEntry> Entries = new();
+    private TextEntry InputBox;
+    private bool _isActivePanel;
+    private static ChatPanel _activeLocal;
+
+    protected override void OnStart()
+    {
+        // Keep a single visible chat panel per client
+        if ( _activeLocal != null && _activeLocal != this )
+        {
+            HidePanel();
+            return;
+        }
+
+        _activeLocal = this;
+        _isActivePanel = true;
+    }
+
+    protected override void OnUpdate()
+    {
+        if ( !_isActivePanel )
+            return;
+
+        if ( InputBox is null )
+            return;
+
+        Panel.AcceptsFocus = false;
+
+        // Toggle chat window with the chat action (typically Enter)
+        if ( Input.Pressed( ChatAction ) )
+        {
+            if ( Open )
+                CloseChat();
+            else
+                OpenChat();
+        }
+
+        // Close with cancel action (e.g., Escape/Menu)
+        if ( Open && !string.IsNullOrWhiteSpace( CancelAction ) && Input.Pressed( CancelAction ) )
+        {
+            CloseChat();
+        }
+
+        // Drop stale entries
+        if ( Entries.RemoveAll( x => !x.IsFresh( FreshSeconds ) ) > 0 )
+        {
+            StateHasChanged();
+        }
+
+        SetClass( "open", Open );
+    }
+
+    private void OpenChat()
+    {
+        Open = true;
+        InputBox?.Focus();
+        StateHasChanged();
+    }
+
+    private void CloseChat()
+    {
+        Open = false;
+        InputBox?.Blur();
+        StateHasChanged();
+    }
+
+    private void SubmitMessage()
+    {
+        var text = InputBox?.Text ?? string.Empty;
+        InputBox.Text = string.Empty;
+
+        if ( string.IsNullOrWhiteSpace( text ) )
+        {
+            CloseChat();
+            return;
+        }
+
+        BroadcastMessage( text.Trim() );
+        CloseChat();
+    }
+
+    [Rpc.Broadcast]
+    private void BroadcastMessage( string message )
+    {
+        message = message?.Trim();
+        if ( string.IsNullOrWhiteSpace( message ) )
+            return;
+
+        var caller = Rpc.Caller;
+        var steamId = caller?.SteamId ?? Connection.Local?.SteamId ?? 0L;
+        var entry = new ChatEntry
+        {
+            SteamId = (long)steamId,
+            Name = caller?.DisplayName ?? Connection.Local?.DisplayName ?? "Player",
+            Message = message,
+            Since = 0
+        };
+
+        Entries.Add( entry );
+        while ( Entries.Count > MaxMessages )
+        {
+            Entries.RemoveAt( 0 );
+        }
+
+        StateHasChanged();
+    }
+
+    protected override void OnDestroy()
+    {
+        if ( _activeLocal == this )
+        {
+            _activeLocal = null;
+        }
+    }
+
+    private void HidePanel()
+    {
+        Open = false;
+        Panel?.SetClass( "hidden", true );
+        if ( Panel != null )
+        {
+            Panel.Style.Display = DisplayMode.None;
+        }
+    }
+}
+
+<style>
+    .SimpleChat {
+        position: absolute;
+        bottom: 32px;
+        left: 32px;
+        z-index: 100;
+        font-family: "Poppins", sans-serif;
+        font-weight: 500;
+        width: 620px;
+        max-height: 820px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        pointer-events: none;
+        gap: 8px;
+    }
+
+    .chat-output {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        align-items: flex-start;
+        overflow: hidden;
+    }
+
+    .chat-entry {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background-color: rgba(12, 16, 24, 0.85);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 8px 12px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+        transition: opacity 0.15s;
+        opacity: 0.8;
+    }
+
+    .chat-entry.fresh {
+        opacity: 1;
+    }
+
+    .chat-entry .avatar {
+        width: 28px;
+        height: 28px;
+        border-radius: 999px;
+        background-size: cover;
+        background-color: #1f2630;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .chat-entry .name {
+        font-weight: 700;
+        color: #9bd3ff;
+        margin-right: 6px;
+        white-space: nowrap;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    }
+
+    .chat-entry .message {
+        color: #edf2f7;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+    }
+
+    .chat-input {
+        opacity: 0;
+        transition: opacity 0.12s, transform 0.12s;
+        transform: translateY(6px);
+        pointer-events: none;
+    }
+
+    .chat-input textentry {
+        width: 100%;
+        background-color: rgba(12, 16, 24, 0.92);
+        border-radius: 12px;
+        color: white;
+        padding: 12px 14px;
+        font-size: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+    }
+
+    .SimpleChat.open .chat-input {
+        opacity: 1;
+        pointer-events: all;
+        transform: translateY(0);
+    }
+
+    .SimpleChat.open .chat-entry {
+        opacity: 1;
+    }
+
+    .hidden {
+        display: none;
+    }
+</style>

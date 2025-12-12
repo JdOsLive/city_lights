@@ -96,8 +96,9 @@ public sealed class SimplePlayerController : Component
 
         var moveInput = Input.AnalogMove;
         var camRot = Scene.Camera.WorldRotation;
-        var forward = camRot.Forward.WithZ( 0 ).Normal;
-        var right = camRot.Right.WithZ( 0 ).Normal;
+        var camYaw = Rotation.FromYaw( camRot.Yaw() );
+        var forward = camYaw.Forward;
+        var right = camYaw.Right;
         var wishDir = (forward * moveInput.x - right * moveInput.y).Normal;
 
         if ( !CharacterController.IsOnGround )
@@ -132,6 +133,9 @@ public sealed class SimplePlayerController : Component
         }
         else
         {
+            // While idle, hard-align the body to the camera's yaw so the head doesn't drift.
+            WorldRotation = camYaw;
+
             var currentZ = CharacterController.Velocity.z;
             var velocityNoZ = CharacterController.Velocity.WithZ(0);
             CharacterController.Velocity = Vector3.Lerp( velocityNoZ, Vector3.Zero, Time.Delta * currentAccel ).WithZ( currentZ );
@@ -145,7 +149,8 @@ public sealed class SimplePlayerController : Component
         // --- SYNC ---
         IsGroundedSync = CharacterController.IsOnGround;
         MoveSpeedSync = CharacterController.Velocity.WithZ(0).Length;
-        if ( wishDir.Length > 0 ) LookDirectionSync = WorldPosition + wishDir * 100f;
+        // Always share look direction from camera so proxies aim correctly even when idle.
+        LookDirectionSync = WorldPosition + Scene.Camera.WorldRotation.Forward * 100f;
         IsDuckingSync = isDucking;
     }
 
@@ -229,6 +234,7 @@ public sealed class SimplePlayerController : Component
             helper.WithWishVelocity( CharacterController.Velocity );
             helper.IsGrounded = CharacterController.IsOnGround;
             helper.DuckLevel = Input.Down( "Duck" ) ? 1.0f : 0.0f;
+            helper.WithLook( Scene.Camera.WorldRotation.Forward );
         }
         else
         {
@@ -237,14 +243,11 @@ public sealed class SimplePlayerController : Component
             helper.WithVelocity( velocity );
             helper.WithWishVelocity( velocity ); 
             helper.DuckLevel = IsDuckingSync ? 1.0f : 0.0f;
-        }
-        
-        if ( !IsProxy ) 
-        {
-        }
-        else if ( LookDirectionSync != Vector3.Zero )
-        {
-            helper.WithLook( LookDirectionSync );
+
+            if ( LookDirectionSync != Vector3.Zero )
+            {
+                helper.WithLook( LookDirectionSync );
+            }
         }
     }
 }
