@@ -6,11 +6,12 @@ public sealed class ThirdPersonCamera : Component
 	public GameObject Player { get; set; }
 
 	[Property, Group("First Person")] 
-	public Vector3 EyeOffset { get; set; } = new Vector3( 0, 0, 64 );
+	public Vector3 EyeOffset { get; set; } = new Vector3( 0, 0, 72 );
+
 	
 	// NEW: Height when crouching (usually half of standing)
 	[Property, Group("First Person")] 
-	public Vector3 CrouchOffset { get; set; } = new Vector3( 0, 0, 32 );
+	public Vector3 CrouchOffset { get; set; } = new Vector3( 0, 0, 36 );
 	
 	[Property, Group("First Person")]
 	public float FieldOfView { get; set; } = 90.0f;
@@ -19,12 +20,12 @@ public sealed class ThirdPersonCamera : Component
 	private bool _hasInitializedAngles = false;
 	
 	// Track current Z height for smoothing
-	private float _currentHeight = 64.0f;
+	private float _currentHeight = 72.0f;
 
 	protected override void OnStart()
 	{
 		Player = null;
-		_currentHeight = EyeOffset.z;
+		_currentHeight = EyeOffset.z + EyeHeightBoost;
 	}
 
 	protected override void OnUpdate()
@@ -65,7 +66,8 @@ public sealed class ThirdPersonCamera : Component
 		// 4. Calculate Height (Smooth Duck)
 		// Check for duck input
 		bool isDucking = Input.Down( "Duck" );
-		float targetZ = isDucking ? CrouchOffset.z : EyeOffset.z;
+		float baseHeight = isDucking ? CrouchOffset.z : EyeOffset.z;
+		float targetZ = baseHeight + EyeHeightBoost;
 		
 		// Smoothly lerp the camera height so it doesn't snap instantly
 		_currentHeight = MathX.Lerp( _currentHeight, targetZ, Time.Delta * 10.0f );

@@ -30,12 +30,18 @@ public sealed class SimplePlayerController : Component
     // This string holds the JSON data of what the player is wearing
     [Sync] public string ClothingJson { get; set; } 
     private bool _clothingApplied = false;
+    private Vector3 _wishVelocity = Vector3.Zero;
 
     // Internal
     private float _distTraveled = 0f;
+    private Vector3 _spawnPosition;
+    private Rotation _spawnRotation;
 
     protected override void OnStart()
     {
+        _spawnPosition = WorldPosition;
+        _spawnRotation = WorldRotation;
+
         // If we are the owner of this object (the player controlling it)
         if ( !IsProxy )
         {
@@ -69,18 +75,12 @@ public sealed class SimplePlayerController : Component
 
         if ( IsProxy ) return;
         
-        if ( CharacterController == null || Scene.Camera == null ) return;
+        if ( CharacterController == null ) return;
 
         // --- RESPAWN ---
         if ( Input.Pressed( "Reload" ) ) 
         {
-            var spawnPoint = Scene.GetAllComponents<SpawnPoint>().FirstOrDefault();
-            if ( spawnPoint != null )
-            {
-                CharacterController.Velocity = Vector3.Zero;
-                WorldPosition = spawnPoint.WorldPosition;
-                WorldRotation = spawnPoint.WorldRotation;
-            }
+            Respawn();
             return; 
         }
 
@@ -95,11 +95,12 @@ public sealed class SimplePlayerController : Component
         else if ( Input.Down( "Run" ) ) wishSpeed = RunSpeed;
 
         var moveInput = Input.AnalogMove;
-        var camRot = Scene.Camera.WorldRotation;
-        var camYaw = Rotation.FromYaw( camRot.Yaw() );
-        var forward = camYaw.Forward;
-        var right = camYaw.Right;
+        var viewRot = Scene.Camera?.WorldRotation ?? WorldRotation;
+        var viewYaw = Rotation.FromYaw( viewRot.Yaw() );
+        var forward = viewYaw.Forward;
+        var right = viewYaw.Right;
         var wishDir = (forward * moveInput.x - right * moveInput.y).Normal;
+        _wishVelocity = wishDir * wishSpeed;
 
         if ( !CharacterController.IsOnGround )
             CharacterController.Velocity += Scene.PhysicsWorld.Gravity * Time.Delta;
@@ -122,7 +123,8 @@ public sealed class SimplePlayerController : Component
 
         if ( wishDir.Length > 0 )
         {
-            var targetRot = Rotation.LookAt( wishDir, Vector3.Up );
+            // Face the view yaw even while moving backward/sideways so the model doesn't spin around
+            var targetRot = viewYaw;
             WorldRotation = Rotation.Slerp( WorldRotation, targetRot, Time.Delta * RotationSpeed );
 
             var currentZ = CharacterController.Velocity.z;
@@ -133,9 +135,6 @@ public sealed class SimplePlayerController : Component
         }
         else
         {
-            // While idle, hard-align the body to the camera's yaw so the head doesn't drift.
-            WorldRotation = camYaw;
-
             var currentZ = CharacterController.Velocity.z;
             var velocityNoZ = CharacterController.Velocity.WithZ(0);
             CharacterController.Velocity = Vector3.Lerp( velocityNoZ, Vector3.Zero, Time.Delta * currentAccel ).WithZ( currentZ );
@@ -149,9 +148,20 @@ public sealed class SimplePlayerController : Component
         // --- SYNC ---
         IsGroundedSync = CharacterController.IsOnGround;
         MoveSpeedSync = CharacterController.Velocity.WithZ(0).Length;
-        // Always share look direction from camera so proxies aim correctly even when idle.
-        LookDirectionSync = WorldPosition + Scene.Camera.WorldRotation.Forward * 100f;
+        // Always share view forward so proxies aim correctly even when idle.
+        LookDirectionSync = viewRot.Forward;
         IsDuckingSync = isDucking;
+    }
+
+    void Respawn()
+    {
+        var spawnPoint = Scene.GetAllComponents<SpawnPoint>().FirstOrDefault();
+        var targetPosition = spawnPoint?.WorldPosition ?? _spawnPosition;
+        var targetRotation = spawnPoint?.WorldRotation ?? _spawnRotation;
+
+        CharacterController.Velocity = Vector3.Zero;
+        WorldPosition = targetPosition;
+        WorldRotation = targetRotation;
     }
 
     void UpdateFootsteps()
@@ -231,17 +241,20 @@ public sealed class SimplePlayerController : Component
         if ( !IsProxy )
         {
             helper.WithVelocity( CharacterController.Velocity );
-            helper.WithWishVelocity( CharacterController.Velocity );
+            helper.WithWishVelocity( _wishVelocity );
             helper.IsGrounded = CharacterController.IsOnGround;
             helper.DuckLevel = Input.Down( "Duck" ) ? 1.0f : 0.0f;
-            helper.WithLook( Scene.Camera.WorldRotation.Forward );
+
+            var lookDir = Scene.Camera != null ? Scene.Camera.WorldRotation.Forward : WorldRotation.Forward;
+            helper.WithLook( lookDir );
         }
         else
         {
             helper.IsGrounded = IsGroundedSync;
             var velocity = WorldRotation.Forward * MoveSpeedSync;
             helper.WithVelocity( velocity );
-            helper.WithWishVelocity( velocity ); 
+            var remoteWish = LookDirectionSync != Vector3.Zero ? LookDirectionSync * MoveSpeedSync : velocity;
+            helper.WithWishVelocity( remoteWish ); 
             helper.DuckLevel = IsDuckingSync ? 1.0f : 0.0f;
 
             if ( LookDirectionSync != Vector3.Zero )
