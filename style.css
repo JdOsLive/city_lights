@@ -1,0 +1,152 @@
+:root {
+  color-scheme: dark;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #2c2f4a 0%, #111321 50%, #0b0c14 100%);
+  color: #f5f7ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
+
+.game-shell {
+  width: min(1100px, 100%);
+  display: grid;
+  gap: 20px;
+}
+
+.hud {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+  background: rgba(18, 20, 33, 0.8);
+  border: 1px solid rgba(123, 141, 255, 0.4);
+  border-radius: 16px;
+  padding: 20px 24px;
+  box-shadow: 0 10px 30px rgba(4, 6, 15, 0.6);
+}
+
+.hud__title h1 {
+  margin: 0 0 6px;
+  font-size: clamp(1.4rem, 2vw, 2rem);
+}
+
+.hud__title p {
+  margin: 0;
+  opacity: 0.7;
+}
+
+.hud__stats {
+  display: flex;
+  gap: 24px;
+}
+
+.hud__stats div {
+  background: rgba(255, 255, 255, 0.04);
+  padding: 12px 18px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.hud__stats span {
+  display: block;
+  font-size: 0.75rem;
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.hud__stats strong {
+  display: block;
+  font-size: 1.4rem;
+}
+
+.game-area {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(123, 141, 255, 0.4);
+  background: linear-gradient(180deg, #1b1c2f 0%, #0f0f18 100%);
+}
+
+canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  background: rgba(9, 10, 20, 0.7);
+  backdrop-filter: blur(6px);
+  gap: 16px;
+}
+
+.overlay.hidden {
+  display: none;
+}
+
+.overlay h2 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.overlay button {
+  border: none;
+  border-radius: 999px;
+  padding: 12px 30px;
+  font-size: 1rem;
+  cursor: pointer;
+  background: #7b8dff;
+  color: #0c0d16;
+  font-weight: 600;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.controls button {
+  flex: 1;
+  max-width: 180px;
+  padding: 14px 0;
+  border-radius: 14px;
+  border: 1px solid rgba(123, 141, 255, 0.4);
+  background: rgba(18, 20, 33, 0.8);
+  color: #f5f7ff;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.controls button:active {
+  transform: translateY(2px) scale(0.98);
+  background: rgba(123, 141, 255, 0.3);
+}
+
+@media (max-width: 720px) {
+  .hud {
+    flex-direction: column;
+  }
+
+  .hud__stats {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
