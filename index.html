@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>City Lights Racing</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="game-shell">
+      <section class="hud">
+        <div class="hud__title">
+          <h1>City Lights Racing</h1>
+          <p>Use ← → or A/D to dodge traffic. Tap the buttons on mobile.</p>
+        </div>
+        <div class="hud__stats">
+          <div>
+            <span>Score</span>
+            <strong id="score">0</strong>
+          </div>
+          <div>
+            <span>Speed</span>
+            <strong id="speed">0</strong>
+          </div>
+          <div>
+            <span>Best</span>
+            <strong id="best">0</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="game-area">
+        <canvas id="track" width="800" height="600" aria-label="Racing track"></canvas>
+        <div class="overlay" id="overlay">
+          <h2 id="status">Press Space to Start</h2>
+          <button id="startButton">Start Race</button>
+        </div>
+      </section>
+
+      <section class="controls">
+        <button id="left" aria-label="Move left">◀</button>
+        <button id="brake" aria-label="Brake">Brake</button>
+        <button id="right" aria-label="Move right">▶</button>
+      </section>
+    </main>
+
+    <script src="game.js"></script>
+  </body>
+</html>
